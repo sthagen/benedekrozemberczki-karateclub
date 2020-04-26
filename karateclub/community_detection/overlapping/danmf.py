@@ -23,7 +23,7 @@ class DANMF(Estimator):
         self.iterations = iterations
         self.seed = seed
         self.lamb = lamb
-        self.p = len(self.layers)
+        self._p = len(self.layers)
 
 
     def _setup_target_matrices(self, graph):
@@ -33,10 +33,10 @@ class DANMF(Estimator):
         Arg types:
             * **graph** *(NetworkX graph)* - The graph being clustered.
         """
-        self.graph = graph
-        self.A = nx.adjacency_matrix(self.graph, nodelist=range(self.graph.number_of_nodes()))
-        self.L = nx.laplacian_matrix(self.graph, nodelist=range(self.graph.number_of_nodes()))
-        self.D = self.L+self.A
+        self._graph = graph
+        self._A = nx.adjacency_matrix(self._graph, nodelist=range(self._graph.number_of_nodes()))
+        self._L = nx.laplacian_matrix(self._graph, nodelist=range(self._graph.number_of_nodes()))
+        self._D = self._L+self._A
 
     def _setup_z(self, i):
         """
@@ -46,9 +46,9 @@ class DANMF(Estimator):
             * **i** *(int)* - The layer index.
         """
         if i == 0:
-            self.Z = self.A
+            self._Z = self._A
         else:
-            self.Z = self.V_s[i-1]
+            self._Z = self._V_s[i-1]
 
     def _sklearn_pretrain(self, i):
         """
@@ -62,7 +62,7 @@ class DANMF(Estimator):
                         random_state=self.seed,
                         max_iter=self.pre_iterations)
 
-        U = nmf_model.fit_transform(self.Z)
+        U = nmf_model.fit_transform(self._Z)
         V = nmf_model.components_
         return U, V
 
@@ -70,22 +70,22 @@ class DANMF(Estimator):
         """
         Pre-training each NMF layer.
         """
-        self.U_s = []
-        self.V_s = []
-        for i in range(self.p):
+        self._U_s = []
+        self._V_s = []
+        for i in range(self._p):
             self._setup_z(i)
             U, V = self._sklearn_pretrain(i)
-            self.U_s.append(U)
-            self.V_s.append(V)
+            self._U_s.append(U)
+            self._V_s.append(V)
 
     def _setup_Q(self):
         """
         Setting up Q matrices.
         """
-        self.Q_s = [None for _ in range(self.p+1)]
-        self.Q_s[self.p] = np.eye(self.layers[self.p-1])
-        for i in range(self.p-1, -1, -1):
-            self.Q_s[i] = np.dot(self.U_s[i], self.Q_s[i+1])
+        self._Q_s = [None for _ in range(self._p+1)]
+        self._Q_s[self._p] = np.eye(self.layers[self._p-1])
+        for i in range(self._p-1, -1, -1):
+            self._Q_s[i] = np.dot(self._U_s[i], self._Q_s[i+1])
 
     def _update_U(self, i):
         """
@@ -95,15 +95,15 @@ class DANMF(Estimator):
             * **i** *(int)* - The layer index.
         """
         if i == 0:
-            R = self.U_s[0].dot(self.Q_s[1].dot(self.VpVpT).dot(self.Q_s[1].T))
-            R = R+self.A_sq.dot(self.U_s[0].dot(self.Q_s[1].dot(self.Q_s[1].T)))
-            Ru = 2*self.A.dot(self.V_s[self.p-1].T.dot(self.Q_s[1].T))
-            self.U_s[0] = (self.U_s[0]*Ru)/np.maximum(R, 10**-10)
+            R = self._U_s[0].dot(self._Q_s[1].dot(self._VpVpT).dot(self._Q_s[1].T))
+            R = R+self._A_sq.dot(self._U_s[0].dot(self._Q_s[1].dot(self._Q_s[1].T)))
+            Ru = 2*self._A.dot(self._V_s[self._p-1].T.dot(self._Q_s[1].T))
+            self._U_s[0] = (self._U_s[0]*Ru)/np.maximum(R, 10**-10)
         else:
-            R = self.P.T.dot(self.P).dot(self.U_s[i]).dot(self.Q_s[i+1]).dot(self.VpVpT).dot(self.Q_s[i+1].T)
-            R = R+self.A_sq.dot(self.P).T.dot(self.P).dot(self.U_s[i]).dot(self.Q_s[i+1]).dot(self.Q_s[i+1].T)
-            Ru = 2*self.A.dot(self.P).T.dot(self.V_s[self.p-1].T).dot(self.Q_s[i+1].T)
-            self.U_s[i] = (self.U_s[i]*Ru)/np.maximum(R, 10**-10)
+            R = self._P.T.dot(self._P).dot(self._U_s[i]).dot(self._Q_s[i+1]).dot(self._VpVpT).dot(self._Q_s[i+1].T)
+            R = R+self._A_sq.dot(self._P).T.dot(self._P).dot(self._U_s[i]).dot(self._Q_s[i+1]).dot(self._Q_s[i+1].T)
+            Ru = 2*self._A.dot(self._P).T.dot(self._V_s[self._p-1].T).dot(self._Q_s[i+1].T)
+            self._U_s[i] = (self._U_s[i]*Ru)/np.maximum(R, 10**-10)
 
     def _update_P(self, i):
         """
@@ -113,9 +113,9 @@ class DANMF(Estimator):
             * **i** *(int)* - The layer index.
         """
         if i == 0:
-            self.P = self.U_s[0]
+            self._P = self._U_s[0]
         else:
-            self.P = self.P.dot(self.U_s[i])
+            self._P = self._P.dot(self._U_s[i])
 
     def _update_V(self, i):
         """
@@ -124,21 +124,21 @@ class DANMF(Estimator):
         Arg types:
             * **i** *(int)* - The layer index.
         """
-        if i < self.p-1:
-            Vu = 2*self.A.dot(self.P).T
-            Vd = self.P.T.dot(self.P).dot(self.V_s[i])+self.V_s[i]
-            self.V_s[i] = self.V_s[i] * Vu/np.maximum(Vd, 10**-10)
+        if i < self._p-1:
+            Vu = 2*self._A.dot(self._P).T
+            Vd = self._P.T.dot(self._P).dot(self._V_s[i])+self._V_s[i]
+            self._V_s[i] = self._V_s[i] * Vu/np.maximum(Vd, 10**-10)
         else:
-            Vu = 2*self.A.dot(self.P).T+(self.lamb*self.A.dot(self.V_s[i].T)).T
-            Vd = self.P.T.dot(self.P).dot(self.V_s[i])
-            Vd = Vd + self.V_s[i]+(self.lamb*self.D.dot(self.V_s[i].T)).T
-            self.V_s[i] = self.V_s[i] * Vu/np.maximum(Vd, 10**-10)
+            Vu = 2*self._A.dot(self._P).T+(self.lamb*self._A.dot(self._V_s[i].T)).T
+            Vd = self._P.T.dot(self._P).dot(self._V_s[i])
+            Vd = Vd + self._V_s[i]+(self.lamb*self._D.dot(self._V_s[i].T)).T
+            self._V_s[i] = self._V_s[i] * Vu/np.maximum(Vd, 10**-10)
 
     def _setup_VpVpT(self):
-        self.VpVpT = self.V_s[self.p-1].dot(self.V_s[self.p-1].T)
+        self._VpVpT = self._V_s[self._p-1].dot(self._V_s[self._p-1].T)
 
     def _setup_Asq(self):
-        self.A_sq = self.A.dot(self.A.T)
+        self._A_sq = self._A.dot(self._A.T)
 
     def get_embedding(self):
         r"""Getting the bottleneck layer embedding.
@@ -146,7 +146,7 @@ class DANMF(Estimator):
         Return types:
             * **embedding** *(Numpy array)* - The bottleneck layer embedding of nodes.
         """
-        embedding = [self.P, self.V_s[-1].T]
+        embedding = [self._P, self._V_s[-1].T]
         embedding = np.concatenate(embedding, axis=1)
         return embedding
 
@@ -156,7 +156,7 @@ class DANMF(Estimator):
         Return types:
             * **memberships** *(dict)*: Node cluster memberships.
         """
-        index = np.argmax(self.P, axis=1)
+        index = np.argmax(self._P, axis=1)
         memberships = {int(i): int(index[i]) for i in range(len(index))}
         return memberships
 
@@ -174,7 +174,7 @@ class DANMF(Estimator):
         for iteration in range(self.iterations):
             self._setup_Q()
             self._setup_VpVpT()
-            for i in range(self.p):
+            for i in range(self._p):
                 self._update_U(i)
                 self._update_P(i)
                 self._update_V(i)

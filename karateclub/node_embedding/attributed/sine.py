@@ -43,15 +43,15 @@ class SINE(Estimator):
         return features
 
     def _select_walklets(self):
-        self.walklets = []
-        for walk in self.walker.walks:
-            for power in range(1,self.window_size+1): 
+        self._walklets = []
+        for walk in self._walker.walks:
+            for power in range(1, self.window_size+1): 
                 for step in range(power+1):
                     neighbors = [n for i, n in enumerate(walk[step:]) if i % power == 0]
                     neighbors = [n for n in neighbors for _ in range(0, 3)]
-                    neighbors = [random.choice(self.features[val]) if i % 3 == 1 and self.features[val] else val for i, val in enumerate(neighbors)]
-                    self.walklets.append(neighbors)
-        del self.walker
+                    neighbors = [random.choice(self._features[val]) if i % 3 == 1 and self._features[val] else val for i, val in enumerate(neighbors)]
+                    self._walklets.append(neighbors)
+        del self._walker
         
         
     def fit(self, graph, X):
@@ -63,12 +63,12 @@ class SINE(Estimator):
             * **X** *(Scipy COO array)* - The matrix of node features.
         """
         self._check_graph(graph)
-        self.walker = RandomWalker(self.walk_length, self.walk_number)
-        self.walker.do_walks(graph)
-        self.features = self._feature_transform(graph, X)
+        self._walker = RandomWalker(self.walk_length, self.walk_number)
+        self._walker.do_walks(graph)
+        self._features = self._feature_transform(graph, X)
         self._select_walklets()
 
-        model = Word2Vec(self.walklets,
+        model = Word2Vec(self._walklets,
                          hs=0,
                          alpha=self.learning_rate,
                          iter=self.epochs,

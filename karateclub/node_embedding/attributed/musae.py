@@ -15,7 +15,7 @@ class MUSAE(Estimator):
     are separable.
        
     Args:
-        walk_number (int): Number of random walks. Default is 10.
+        walk_number (int): Number of random walks. Default is 5.
         walk_length (int): Length of random walks. Default is 80.
         dimensions (int): Dimensionality of embedding. Default is 32.
         workers (int): Number of cores. Default is 4.
@@ -68,7 +68,7 @@ class MUSAE(Estimator):
 
     def _setup_musae_features(self, approximation):
         features = {str(node): [] for node in self.graph.nodes()}
-        for walk in self.walker.walks:
+        for walk in self._walker.walks:
             for i in range(len(walk)-approximation):
                 source = walk[i]
                 target = walk[i+approximation]
@@ -99,11 +99,11 @@ class MUSAE(Estimator):
         """
         self._check_graph(graph)
         self.graph = graph
-        self.walker = RandomWalker(self.walk_length, self.walk_number)
-        self.walker.do_walks(graph)
+        self._walker = RandomWalker(self.walk_length, self.walk_number)
+        self._walker.do_walks(graph)
         self.features = self._feature_transform(graph, X)
-        self.base_docs = self._create_base_docs()
-        self.embeddings = [self._create_single_embedding(self.base_docs)]
+        self._base_docs = self._create_base_docs()
+        self.embeddings = [self._create_single_embedding(self._base_docs)]
         self._learn_musae_embedding()
 
     def get_embedding(self):

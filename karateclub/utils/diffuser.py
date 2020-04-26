@@ -7,12 +7,13 @@ class EulerianDiffuser:
     Class to make diffusions for a given graph.
 
     Args:
-        diffusion_number (int): Number of diffusions. Default is 10.
-        diffusion_cover (int): Number of nodes in diffusion. Default is 80.
+        diffusion_number (int): Number of diffusions
+        diffusion_cover (int): Number of nodes in diffusion.
     """
-    def __init__(self, diffusion_number=10, diffusion_cover=80):
+    def __init__(self, diffusion_number, diffusion_cover):
         self.diffusion_number = diffusion_number
         self.diffusion_cover = diffusion_cover
+
 
     def _run_diffusion_process(self, node):
         """
@@ -42,6 +43,7 @@ class EulerianDiffuser:
         if len(euler) == 0:
             euler = [str(u) for u, v in nx.eulerian_circuit(graph, infected[0])]
         return euler
+
 
     def do_diffusions(self, graph):
         """
