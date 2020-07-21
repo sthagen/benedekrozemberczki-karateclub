@@ -1,8 +1,9 @@
 import random
 import numpy as np
 import networkx as nx
-from karateclub.utils.walker import RandomWalker
+from typing import Dict
 from karateclub.estimator import Estimator
+from karateclub.utils.walker import RandomWalker
 
 class GEMSEC(Estimator):
     r"""An implementation of `"GEMSEC" <https://arxiv.org/abs/1802.03997>`_
@@ -22,9 +23,11 @@ class GEMSEC(Estimator):
         learning_rate (float): Gradient descent learning rate. Default is 0.1.
         clusters (int): Number of cluster centers. Default is 10.
         gamma (float): Clustering cost weight coefficient. Default is 0.1.
+        seed (int): Random seed value. Default is 42.
     """
-    def __init__(self, walk_number=5, walk_length=80, dimensions=32, negative_samples=5,
-                 window_size=5, learning_rate=0.1, clusters=10, gamma=0.1):
+    def __init__(self, walk_number: int=5, walk_length: int=80, dimensions: int=32,
+                 negative_samples: int=5, window_size: int=5, learning_rate: float=0.1,
+                 clusters: int=10, gamma: float=0.1, seed: int=42):
 
         self.walk_number = walk_number
         self.walk_length = walk_length
@@ -34,6 +37,7 @@ class GEMSEC(Estimator):
         self.learning_rate = learning_rate
         self.clusters = clusters
         self.gamma = gamma
+        self.seed = seed
 
 
     def _setup_sampling_weights(self, graph):
@@ -167,13 +171,14 @@ class GEMSEC(Estimator):
                     self._update_a_weight(source_node, target_node)
 
 
-    def fit(self, graph):
+    def fit(self, graph: nx.classes.graph.Graph):
         """
         Fitting a GEMSEC model.
 
         Arg types:
             * **graph** *(NetworkX graph)* - The graph to be embedded.
         """
+        self._set_seed()
         self._check_graph(graph)
         self._setup_sampling_weights(graph)
         self._walker = RandomWalker(self.walk_length, self.walk_number)
@@ -183,7 +188,7 @@ class GEMSEC(Estimator):
         self._do_gradient_descent()
 
 
-    def get_embedding(self):
+    def get_embedding(self) -> np.array:
         r"""Getting the node embedding.
 
         Return types:
@@ -207,7 +212,7 @@ class GEMSEC(Estimator):
         return cluster_index
 
 
-    def get_memberships(self):
+    def get_memberships(self) -> Dict[int, int]:
         r"""Getting the cluster membership of nodes.
 
         Return types:

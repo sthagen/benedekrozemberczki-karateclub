@@ -24,9 +24,11 @@ class Role2Vec(Estimator):
         down_sampling (float): Down sampling frequency. Default is 0.0001.
         min_count (int): Minimal count of feature occurences. Default is 10.
         wl_iterations (int): Number of Weisfeiler-Lehman hashing iterations. Default is 2.
+        seed (int): Random seed value. Default is 42.
     """
-    def __init__(self, walk_number=10, walk_length=80, dimensions=128, workers=4, window_size=2,
-                 epochs=1, learning_rate=0.05, down_sampling=0.0001, min_count=10, wl_iterations=2):
+    def __init__(self, walk_number: int=10, walk_length: int=80, dimensions: int=128, workers: int=4,
+                 window_size: int=2, epochs: int=1, learning_rate: float=0.05, down_sampling: float=0.0001,
+                 min_count: int=10, wl_iterations: int=2, seed: int=42):
 
         self.walk_number = walk_number
         self.walk_length = walk_length
@@ -38,6 +40,7 @@ class Role2Vec(Estimator):
         self.down_sampling = down_sampling
         self.min_count = min_count
         self.wl_iterations = wl_iterations
+        self.seed = seed
 
     def _transform_walks(self, walks):
         """
@@ -76,13 +79,14 @@ class Role2Vec(Estimator):
         return new_features
 
 
-    def fit(self, graph):
+    def fit(self, graph: nx.classes.graph.Graph):
         """
         Fitting a Role2vec model.
 
         Arg types:
             * **graph** *(NetworkX graph)* - The graph to be embedded.
         """
+        self._set_seed()
         self._check_graph(graph)
         walker = RandomWalker(self.walk_length, self.walk_number)
         walker.do_walks(graph)
@@ -100,11 +104,12 @@ class Role2Vec(Estimator):
                         workers=self.workers,
                         sample=self.down_sampling,
                         epochs=self.epochs,
-                        alpha=self.learning_rate)
+                        alpha=self.learning_rate,
+                        seed=self.seed)
 
         self._embedding = [model.docvecs[str(i)] for i, _ in enumerate(documents)]
 
-    def get_embedding(self):
+    def get_embedding(self) -> np.array:
         r"""Getting the node embedding.
 
         Return types:

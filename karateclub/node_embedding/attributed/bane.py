@@ -1,6 +1,8 @@
 import numpy as np
 import networkx as nx
+from typing import Union
 from numpy.linalg import inv
+from scipy.sparse import coo_matrix
 from sklearn.decomposition import TruncatedSVD
 from karateclub.estimator import Estimator
 
@@ -17,15 +19,18 @@ class BANE(Estimator):
         alpha (float): Kernel matrix inversion parameter. Default is 0.3. 
         iterations (int): Matrix decomposition iterations. Default is 100.
         binarization_iterations (int): Binarization iterations. Default is 20.
+        seed (int): Random seed value. Default is 42.
     """
-    def __init__(self, dimensions=32, svd_iterations=20, seed=42, alpha=0.3,
-                 iterations=100, binarization_iterations=20):
+    def __init__(self, dimensions: int=32, svd_iterations: int=20, seed: int=42,
+                 alpha: float=0.3, iterations: int=100, binarization_iterations: int=20):
+
         self.dimensions = dimensions
         self.svd_iterations = svd_iterations
         self.seed = seed
         self.alpha = alpha
         self.iterations = iterations
         self.binarization_iterations = binarization_iterations
+        self.seed = seed
 
     def _create_target_matrix(self, graph):
         """
@@ -45,7 +50,7 @@ class BANE(Estimator):
                                 nodelist=range(graph.number_of_nodes()))
         return P
 
-    def fit(self, graph, X):
+    def fit(self, graph: nx.classes.graph.Graph, X: Union[np.array, coo_matrix]):
         """
         Fitting a BANE model.
 
@@ -53,6 +58,7 @@ class BANE(Estimator):
             * **graph** *(NetworkX graph)* - The graph to be embedded.
             * **X** *(Scipy COO or Numpy array)* - The matrix of node features.
         """
+        self._set_seed()
         self._check_graph(graph)
         self._P = self._create_target_matrix(graph)
         self._X = X
@@ -106,7 +112,7 @@ class BANE(Estimator):
             self._update_Q()
             self._update_B()
 
-    def get_embedding(self):
+    def get_embedding(self) -> np.array:
         r"""Getting the node embedding.
 
         Return types:

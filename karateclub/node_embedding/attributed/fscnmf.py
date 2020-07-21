@@ -1,6 +1,8 @@
 import numpy as np
 import networkx as nx
 from scipy import sparse
+from scipy.sparse import coo_matrix
+from typing import Union
 from numpy.linalg import inv
 from karateclub.estimator import Estimator
 
@@ -21,10 +23,11 @@ class FSCNMF(Estimator):
         beta_1 (float): Alignment parameter for feature matrix. Default is 1000.0.
         beta_2 (float): Attribute basis regularization. Default is 1.0.
         beta_3 (float): Attribute basis regularization. Default is 1.0.
+        seed (int): Random seed value. Default is 42.
     """
-    def __init__(self, dimensions=32, lower_control=10**-15, iterations=500,
-                 alpha_1=1000.0, alpha_2=1.0, alpha_3=1.0,
-                 beta_1=1000.0, beta_2=1.0, beta_3=1.0):
+    def __init__(self, dimensions: int=32, lower_control: float=10**-15, iterations: int=500,
+                 alpha_1: float=1000.0, alpha_2: float=1.0, alpha_3: float=1.0,
+                 beta_1: float=1000.0, beta_2: float=1.0, beta_3: float=1.0, seed: int=42):
 
         self.dimensions = dimensions
         self.lower_control = lower_control
@@ -35,6 +38,7 @@ class FSCNMF(Estimator):
         self.beta_1 = beta_1
         self.beta_2 = beta_2
         self.beta_3 = beta_3
+        self.seed = seed
 
     def _init_weights(self):
         """
@@ -117,14 +121,15 @@ class FSCNMF(Estimator):
         A_hat = D_inverse.dot(A)
         return A_hat
 
-    def fit(self, graph, X):
+    def fit(self, graph: nx.classes.graph.Graph, X: Union[np.array, coo_matrix]):
         """
-        Fitting a TENE model.
+        Fitting an FSCNMF model.
 
         Arg types:
             * **graph** *(NetworkX graph)* - The graph to be embedded.
             * **X** *(Scipy COO or Numpy array)* - The matrix of node features.
         """
+        self._set_seed()
         self._check_graph(graph)
         self._X = X
         self._A = self._create_base_matrix(graph)
@@ -135,7 +140,7 @@ class FSCNMF(Estimator):
             self._update_U()
             self._update_V()
 
-    def get_embedding(self):
+    def get_embedding(self) -> np.array:
         r"""Getting the node embedding.
 
         Return types:

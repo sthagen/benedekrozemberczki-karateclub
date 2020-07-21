@@ -18,7 +18,7 @@ class GraRep(Estimator):
         order (int): Number of PMI matrix powers. Default is 5.
         seed (int): SVD random seed. Default is 42.
     """
-    def __init__(self, dimensions=32, iteration=10, order=5, seed=42):
+    def __init__(self, dimensions: int=32, iteration: int=10, order: int=5, seed: int=42):
         self.dimensions = dimensions
         self.iterations = iteration
         self.order = order
@@ -81,13 +81,14 @@ class GraRep(Estimator):
         embedding = svd.transform(target_matrix)
         self._embeddings.append(embedding)
 
-    def fit(self, graph):
+    def fit(self, graph: nx.classes.graph.Graph):
         """
         Fitting a GraRep model.
 
         Arg types:
             * **graph** *(NetworkX graph)* - The graph to be embedded.
         """
+        self._set_seed()
         self._check_graph(graph)
         self._A_tilde, self._A_hat = self._create_base_matrix(graph)
         self._embeddings = []
@@ -97,7 +98,7 @@ class GraRep(Estimator):
             target_matrix = self._create_target_matrix()
             self._create_single_embedding(target_matrix)
 
-    def get_embedding(self):
+    def get_embedding(self) -> np.array:
         r"""Getting the node embedding.
 
         Return types:

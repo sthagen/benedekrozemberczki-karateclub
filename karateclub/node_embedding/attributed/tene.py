@@ -1,6 +1,8 @@
 import numpy as np
 import networkx as nx
+from typing import Union
 from scipy import sparse
+from scipy.sparse import coo_matrix
 from karateclub.estimator import Estimator
 
 class TENE(Estimator):
@@ -15,14 +17,16 @@ class TENE(Estimator):
         alpha (float): Adjacency matrix regularization coefficient. Default is 0.1. 
         beta (float): Feature matrix regularization coefficient. Default is 0.1.
         iterations (int): ALS iterations. Default is 200.
+        seed (int): Random seed value. Default is 42.
     """
     def __init__(self, dimensions=32, lower_control=10**-15,
-                 alpha=0.1, beta=0.1, iterations=200):
+                 alpha=0.1, beta=0.1, iterations=200, seed=42):
         self.dimensions = dimensions
         self.lower_control = lower_control
         self.alpha = alpha
         self.beta = beta
         self.iterations = iterations
+        self.seed = seed
 
     def _init_weights(self):
         """
@@ -107,7 +111,7 @@ class TENE(Estimator):
         A_hat = D_inverse.dot(A)
         return A_hat
 
-    def fit(self, graph, T):
+    def fit(self, graph: nx.classes.graph.Graph, T: Union[np.array, coo_matrix]):
         """
         Fitting a TENE model.
 
@@ -115,6 +119,7 @@ class TENE(Estimator):
             * **graph** *(NetworkX graph)* - The graph to be embedded.
             * **T** *(Scipy COO or Numpy array)* - The matrix of node features.
         """
+        self._set_seed()
         self._check_graph(graph)
         self._X = self._create_base_matrix(graph)
         self._T = T
@@ -126,7 +131,7 @@ class TENE(Estimator):
             self._update_U()
             self._update_Q()
 
-    def get_embedding(self):
+    def get_embedding(self) -> np.array:
         r"""Getting the node embedding.
 
         Return types:

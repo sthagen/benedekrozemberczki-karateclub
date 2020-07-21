@@ -18,9 +18,10 @@ class GraphWave(Estimator):
         approximation (int): Chebyshev polynomial order. Default is 100.
         mechanism (str): Wavelet calculation method 'exact' or 'approximate'. Default is 'approximate'.
         switch (int): Vertex cardinality when the wavelet calculation method switches to approximation. Default is 1000.
+        seed (int): Random seed value. Default is 42.
     """
-    def __init__(self, sample_number=200, step_size=0.1, heat_coefficient=1.0,
-                 approximation=100, mechanism="approximate", switch=1000):
+    def __init__(self, sample_number: int=200, step_size: float=0.1, heat_coefficient: float=1.0,
+                 approximation: int=100, mechanism: str="approximate", switch: int=1000, seed: int=42):
 
         self.sample_number = sample_number
         self.step_size = step_size
@@ -28,6 +29,7 @@ class GraphWave(Estimator):
         self.approximation = approximation
         self.mechanism = mechanism
         self.switch = switch
+        self.seed = seed
 
     def _create_evaluation_points(self):
         """
@@ -60,7 +62,7 @@ class GraphWave(Estimator):
         impulse[node] = 1.0
         diags = np.diag(np.exp(-self.heat_coefficient*self._eigen_values))
         eigen_diag = np.dot(self._eigen_vectors, diags)
-        waves = np.dot(eigen_diag, np.transpose(self.eigen_vectors))
+        waves = np.dot(eigen_diag, np.transpose(self._eigen_vectors))
         wavelet_coefficients = np.dot(waves, impulse)
         return wavelet_coefficients
 
@@ -111,13 +113,14 @@ class GraphWave(Estimator):
                                                                            m=self.approximation)
         self._approximate_wavelet_calculator()
 
-    def fit(self, graph):
+    def fit(self, graph: nx.classes.graph.Graph):
         """
         Fitting a GraphWave model.
 
         Arg types:
             * **graph** *(NetworkX graph)* - The graph to be embedded.
         """
+        self._set_seed()
         self._check_graph(graph)
         graph.remove_edges_from(nx.selfloop_edges(graph))
         self._create_evaluation_points()
@@ -129,9 +132,10 @@ class GraphWave(Estimator):
         elif self.mechanism == "approximate":
             self._approximate_structural_wavelet_embedding()
         else:
-            pass
+            raise NameError("Unknown method.")
 
-    def get_embedding(self):
+
+    def get_embedding(self) -> np.array:
         r"""Getting the node embedding.
 
         Return types:

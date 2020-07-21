@@ -1,5 +1,6 @@
 import numpy as np
 import networkx as nx
+from typing import List, Dict
 from sklearn.decomposition import NMF
 from karateclub.estimator import Estimator
 
@@ -16,14 +17,17 @@ class DANMF(Estimator):
         iterations (int): Number of training epochs. Default 100.
         seed (int): Random seed for weight initializations. Default 42.
         lamb (float): Regularization parameter. Default 0.01.
+        seed (int): Random seed value. Default is 42.
     """
-    def __init__(self, layers=[32, 8], pre_iterations=100, iterations=100, seed=42, lamb=0.01):
+    def __init__(self, layers: List[int]=[32, 8], pre_iterations: int=100,
+                 iterations: int=100, seed: int=42, lamb: float=0.01):
         self.layers = layers
         self.pre_iterations = pre_iterations
         self.iterations = iterations
         self.seed = seed
         self.lamb = lamb
         self._p = len(self.layers)
+        self.seed = seed
 
 
     def _setup_target_matrices(self, graph):
@@ -140,7 +144,7 @@ class DANMF(Estimator):
     def _setup_Asq(self):
         self._A_sq = self._A.dot(self._A.T)
 
-    def get_embedding(self):
+    def get_embedding(self) -> np.array:
         r"""Getting the bottleneck layer embedding.
 
         Return types:
@@ -150,7 +154,7 @@ class DANMF(Estimator):
         embedding = np.concatenate(embedding, axis=1)
         return embedding
 
-    def get_memberships(self):
+    def get_memberships(self) -> Dict[int, int]:
         r"""Getting the cluster membership of nodes.
 
         Return types:
@@ -160,13 +164,14 @@ class DANMF(Estimator):
         memberships = {int(i): int(index[i]) for i in range(len(index))}
         return memberships
 
-    def fit(self, graph):
+    def fit(self, graph: nx.classes.graph.Graph):
         """
         Fitting a DANMF clustering model.
 
         Arg types:
             * **graph** *(NetworkX graph)* - The graph to be clustered.
         """
+        self._set_seed()
         self._check_graph(graph)
         self._setup_target_matrices(graph)
         self._pre_training()

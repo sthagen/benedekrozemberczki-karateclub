@@ -1,5 +1,6 @@
 import numpy as np
 import networkx as nx
+from typing import Dict
 from scipy.sparse import coo_matrix
 from karateclub.estimator import Estimator
 
@@ -20,9 +21,11 @@ class MNMF(Estimator):
         iterations (int): Number of power iterations. Default is 200.
         lower_control (float): Floating point overflow control. Default is 10**-15.
         eta (float): Similarity mixing parameter. Default is 5.0.
+        seed (int): Random seed value. Default is 42.
     """
-    def __init__(self, dimensions=128, clusters=10, lambd=0.2, alpha=0.05,
-                 beta=0.05, iterations=200, lower_control=10**-15, eta=5.0):
+    def __init__(self, dimensions: int=128, clusters: int=10, lambd: float=0.2,
+                 alpha: float=0.05, beta: float=0.05, iterations: int=200,
+                 lower_control: float=10**-15, eta: float=5.0, seed: int=42):
 
         self.dimensions = dimensions
         self.clusters = clusters
@@ -32,6 +35,7 @@ class MNMF(Estimator):
         self.iterations = iterations
         self.lower_control = lower_control
         self.eta = eta
+        self.seed = seed
 
     def _modularity_generator(self):
         """Calculating the sparse modularity matrix."""
@@ -106,7 +110,7 @@ class MNMF(Estimator):
         row_sums = self._H.sum(axis=1)
         self._H = self._H / row_sums[:, np.newaxis]
 
-    def get_memberships(self):
+    def get_memberships(self) -> Dict[int, int]:
         r"""Getting the cluster membership of nodes.
 
         Return types:
@@ -116,7 +120,7 @@ class MNMF(Estimator):
         memberships = {i: membership for i, membership in enumerate(indices)}
         return memberships
 
-    def get_embedding(self):
+    def get_embedding(self) -> np.array:
         r"""Getting the node embedding.
 
         Return types:
@@ -125,7 +129,7 @@ class MNMF(Estimator):
         embedding = self._U
         return embedding
 
-    def get_cluster_centers(self):
+    def get_cluster_centers(self) -> np.array:
         r"""Getting the node embedding.
 
         Return types:
@@ -134,13 +138,14 @@ class MNMF(Estimator):
         centers = self._C
         return centers
 
-    def fit(self, graph):
+    def fit(self, graph: nx.classes.graph.Graph):
         """
         Fitting an M-NMF clustering model.
 
         Arg types:
             * **graph** *(NetworkX graph)* - The graph to be clustered.
         """
+        self._set_seed()
         self._check_graph(graph)
         self._graph = graph
         self._setup_matrices()

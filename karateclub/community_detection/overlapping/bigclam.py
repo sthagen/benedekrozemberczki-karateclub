@@ -2,6 +2,7 @@ import random
 import community
 import numpy as np
 import networkx as nx
+from typing import Dict
 from karateclub.estimator import Estimator
 
 class BigClam(Estimator):
@@ -14,11 +15,13 @@ class BigClam(Estimator):
         dimensions (int): Number of embedding dimensions. Default 8.
         iterations (int): Number of training iterations. Default 50.
         learning_rate (float): Gradient ascent learning rate. Default is 0.005.
+        seed (int): Random seed value. Default is 42.
     """
-    def __init__(self, dimensions=8, iterations=50, learning_rate=0.005):
+    def __init__(self, dimensions: int=8, iterations: int=50, learning_rate: int=0.005, seed: int=42):
         self.dimensions = dimensions
         self.iterations = iterations
         self.learning_rate = learning_rate
+        self.seed = seed
 
     def _initialize_features(self, number_of_nodes):
         """
@@ -60,7 +63,7 @@ class BigClam(Estimator):
         self._embedding[node] = np.clip(self._embedding[node], 0.00001, 10)
         self._global_features = self._global_features - node_feature + self._embedding[node]
 
-    def get_memberships(self):
+    def get_memberships(self) -> Dict[int, int]:
         r"""Getting the cluster membership of nodes.
 
         Return types:
@@ -70,7 +73,7 @@ class BigClam(Estimator):
         memberships = {i: membership for i, membership in enumerate(indices)}
         return memberships
 
-    def get_embedding(self):
+    def get_embedding(self) -> np.array:
         r"""Getting the node embedding.
 
         Return types:
@@ -79,13 +82,14 @@ class BigClam(Estimator):
         embedding = self._embedding
         return embedding
 
-    def fit(self, graph):
+    def fit(self, graph: nx.classes.graph.Graph):
         """
         Fitting a BigClam clustering model.
 
         Arg types:
             * **graph** *(NetworkX graph)* - The graph to be clustered.
         """
+        self._set_seed()
         self._check_graph(graph)
         number_of_nodes = graph.number_of_nodes()
         self._initialize_features(number_of_nodes)

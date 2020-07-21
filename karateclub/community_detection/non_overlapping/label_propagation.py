@@ -1,5 +1,6 @@
 import random
 import networkx as nx
+from typing import Dict
 from karateclub.estimator import Estimator
 
 class LabelPropagation(Estimator):
@@ -12,7 +13,7 @@ class LabelPropagation(Estimator):
         seed (int): Random seed. Default is 42.
         iterations (int): Propagation iterations. Default is 100.
     """
-    def __init__(self, seed=42, iterations=100):
+    def __init__(self, seed: int=42, iterations: int=100):
         self.seed = seed
         self.iterations = iterations
 
@@ -45,13 +46,14 @@ class LabelPropagation(Estimator):
             new_labels[node] = pick
         self._labels = new_labels
 
-    def fit(self, graph):
+    def fit(self, graph: nx.classes.graph.Graph):
         """
         Fitting a Label Propagation clustering model.
 
         Arg types:
             * **graph** *(NetworkX graph)* - The graph to be clustered.
         """
+        self._set_seed()
         self._check_graph(graph)
         self._graph = graph
         self._nodes = [node for node in self._graph.nodes()]
@@ -60,7 +62,7 @@ class LabelPropagation(Estimator):
         for _ in range(self.iterations):
             self._do_a_propagation()
 
-    def get_memberships(self):
+    def get_memberships(self) -> Dict[int, int]:
         r"""Getting the cluster membership of nodes.
 
         Return types:

@@ -1,0 +1,13 @@
+[run]
+source=karateclub
+omit=
+    karateclub/dataset/*
+    karateclub/node_embedding/neighbourhood/boostne.py
+[report]
+exclude_lines =
+    pragma: no cover
+    raise
+    except
+    register_parameter
+    warn
+    pass

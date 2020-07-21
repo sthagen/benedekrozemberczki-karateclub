@@ -14,11 +14,13 @@ class NMFADMM(Estimator):
         dimensions (int): Number of individual embedding dimensions. Default is 32.
         iterations (int): Number of ADMM iterations. Default is 100.
         rho (float): ADMM Tuning parameter. Default is 1.0.
+        seed (int): Random seed value. Default is 42.
     """
-    def __init__(self, dimensions=32, iterations=100, rho=1.0):
+    def __init__(self, dimensions: int=32, iterations: int=100, rho: float=1.0, seed: int=42):
         self.dimensions = dimensions
         self.iterations = iterations
         self.rho = rho
+        self.seed = seed
         
     def _init_weights(self):
         """
@@ -129,13 +131,14 @@ class NMFADMM(Estimator):
         A_hat = D_inverse.dot(A)
         return A_hat
 
-    def fit(self, graph):
+    def fit(self, graph: nx.classes.graph.Graph):
         """
         Fitting an NMF model on the normalized adjacency matrix with ADMM.
 
         Arg types:
             * **graph** *(NetworkX graph)* - The graph to be embedded.
         """
+        self._set_seed()
         self._check_graph(graph)
         self._V = self._create_base_matrix(graph)
         self._init_weights()
@@ -149,7 +152,7 @@ class NMFADMM(Estimator):
             self._update_alpha_W()
             self._update_alpha_H()
 
-    def get_embedding(self):
+    def get_embedding(self) -> np.array:
         r"""Getting the node embedding.
 
         Return types:

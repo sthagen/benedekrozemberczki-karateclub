@@ -60,6 +60,8 @@ Structural node embedding
 Attributed node embedding
 --------------------
 
+* Benedek Rozemberczki, Rik Sarkar: **Characteristic Functions on Graphs: Birds of a Feather, from Statistical Descriptors to Parametric Models** `Paper <https://arxiv.org/abs/2005.07959>`_, `Code <https://github.com/benedekrozemberczki/FEATHER>`_
+
 * Benedek Rozemberczki, Carl Allen, Rik Sarkar: **Multi-Scale Attributed Node Embedding** `Paper <https://arxiv.org/abs/1909.13021>`_, `Code <https://github.com/benedekrozemberczki/MUSAE>`_
 
 * Daokun Zhang, Jie Yin, Xingquan Zhu, Chengqi Zhang: **SINE: Scalable Incomplete Network Embedding** `Paper <https://arxiv.org/pdf/1810.06768.pdf>`_, `Code <https://github.com/benedekrozemberczki/SINE>`_
@@ -79,6 +81,8 @@ Meta node embedding
 
 Whole graph embedding
 --------------------
+
+* Benedek Rozemberczki, Rik Sarkar: **Characteristic Functions on Graphs: Birds of a Feather, from Statistical Descriptors to Parametric Models** `Paper <https://arxiv.org/abs/2005.07959>`_, `Code <https://github.com/benedekrozemberczki/FEATHER>`_
 
 * Feng Gao, Guy Wolf, Matthew Hirn: **Geometric Scattering for Graph Data Analysis** `Paper <http://proceedings.mlr.press/v97/gao19e.html>`_
 

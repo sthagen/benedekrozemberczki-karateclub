@@ -12,11 +12,13 @@ class NEU(Estimator):
         L1 (float): Weight of lower order proximities. Defauls is 0.5
         L2 (float): Weight of higer order proximities. Default is 0.25.
         T (int): Number of iterations. Default is 1.
+        seed (int): Random seed value. Default is 42.
     """
-    def __init__(self, L1=0.5, L2=0.25, T=1):
+    def __init__(self, L1: float=0.5, L2: float=0.25, T: int=1, seed: int=42):
         self.iterations = T
         self.L1 = L1
         self.L2 = L2
+        self.seed = seed
 
     def _normalize_embedding(self, original_embedding):
         r"""Normalizes matrix rows by their Frobenius norm.
@@ -48,7 +50,7 @@ class NEU(Estimator):
                          self.L2*(normalized_adjacency @ (normalized_adjacency @ embedding)))
         return embedding
 
-    def fit(self, graph, model):
+    def fit(self, graph: nx.classes.graph.Graph, model: Estimator):
         r"""
         Fitting a model and performing NEU.
 
@@ -56,13 +58,14 @@ class NEU(Estimator):
             * **graph** *(NetworkX graph)* - The graph to be embedded.
             * **model** *(KC embedding model)* - Karate Club embedding.
         """
+        self._set_seed()
         self._check_graph(graph)
         self.model = model
         self.model.fit(graph)
         original_embedding = self.model.get_embedding()
         self._embedding = self._update_embedding(graph, original_embedding)    
 
-    def get_embedding(self):
+    def get_embedding(self) -> np.array:
         r"""Getting the node embedding.
 
         Return types:

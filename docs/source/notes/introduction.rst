@@ -4,7 +4,7 @@ Introduction by example
 *Karate Club* is an unsupervised machine learning extension library for `NetworkX <https://networkx.github.io/>`_.
 
 
-*Karate Club* consists of state-of-the-art methods to do unsupervised learning on graph structured data. To put it simply it is a Swiss Army knife for small-scale graph mining research. First, it provides network embedding techniques at the node and graph level. Second, it includes a variety of overlapping and non-overlapping community detection methods. Implemented methods cover a wide range of network science (`NetSci <https://netscisociety.net/home>`_, `CompleNet <https://complenet.weebly.com/>`_, data mining `ICDM <http://icdm2019.bigke.org/>`_, `CIKM <http://www.cikm2019.net/>`_, `KDD <https://www.kdd.org/kdd2020/>`_, artificial intelligence (`AAAI <http://www.aaai.org/Conferences/conferences.php>`_, `IJCAI <https://www.ijcai.org/>`_) and machine learning (`NeurIPS <https://nips.cc/>`_, `ICML <https://icml.cc/>`_, `ICLR <https://iclr.cc/>`_) conferences, workshops, and pieces from prominent journals.  
+*Karate Club* is an unsupervised machine learning extension library for `NetworkX <https://networkx.github.io/>`_. It builds on other open source linear algebra, machine learning, and graph signal processing libraries such as `Numpy <https://numpy.org/>`_, `Scipy <https://www.scipy.org/>`_, `Gensim <https://radimrehurek.com/gensim/>`_, `PyGSP <https://pygsp.readthedocs.io/en/stable/>`_, and `Scikit-Learn <https://scikit-learn.org/stable/>`_. *Karate Club* consists of state-of-the-art methods to do unsupervised learning on graph structured data. To put it simply it is a Swiss Army knife for small-scale graph mining research. First, it provides network embedding techniques at the node and graph level. Second, it includes a variety of overlapping and non-overlapping commmunity detection methods. Implemented methods cover a wide range of network science (`NetSci <https://netscisociety.net/home>`_, `Complenet <https://complenet.weebly.com/>`_), data mining (`ICDM <http://icdm2019.bigke.org/>`_, `CIKM <http://www.cikm2019.net/>`_, `KDD <https://www.kdd.org/kdd2020/>`_), artificial intelligence (`AAAI <http://www.aaai.org/Conferences/conferences.php>`_, `IJCAI <https://www.ijcai.org/>`_) and machine learning (`NeurIPS <https://nips.cc/>`_, `ICML <https://icml.cc/>`_, `ICLR <https://iclr.cc/>`_) conferences, workshops, and pieces from prominent journals. 
 
 --------------------------------------------------------------------------------
 
@@ -14,13 +14,13 @@ If you find *Karate Club* useful in your research, please consider citing the fo
 
 .. code-block:: latex
 
-    >@misc{karateclub2020,
-           title={An API Oriented Open-source Python Framework for Unsupervised Learning on Graphs},
-           author={Benedek Rozemberczki and Oliver Kiss and Rik Sarkar},
-           year={2020},
-           eprint={2003.04819},
-           archivePrefix={arXiv},
-           primaryClass={cs.LG}
+    @misc{karateclub2020,
+          title={An API Oriented Open-source Python Framework for Unsupervised Learning on Graphs},
+          author={Benedek Rozemberczki and Oliver Kiss and Rik Sarkar},
+          year={2020},
+          eprint={2003.04819},
+          archivePrefix={arXiv},
+          primaryClass={cs.LG}
     }
 
 Overview
@@ -224,15 +224,15 @@ These are returned as a list of ``NetworkX`` graphs and ``numpy`` array respecti
     graphs = reader.get_graphs()
     y = reader.get_target()
 
-We fit a Graph2Vec graph level embedding, with the standard hyperparameter settings. These are pretty widely used settings.
+We fit a FEATHER graph level embedding, with the standard hyperparameter settings. These are pretty widely used settings.
 First, we use the model constructor without custom parameters. Second, we fit the model to the graphs. Third, we get the graph embedding
 which is a ``numpy`` array.
 
 .. code-block:: python
 
-    from karateclub import Graph2Vec
+    from karateclub import FeatherGraph
 
-    model = Graph2Vec()
+    model = FeatherGraph()
     model.fit(graphs)
     X = model.get_embedding()
 

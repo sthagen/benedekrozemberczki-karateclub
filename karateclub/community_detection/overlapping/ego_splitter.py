@@ -1,5 +1,6 @@
 import community
 import networkx as nx
+from typing import Dict
 from karateclub.estimator import Estimator
 
 class EgoNetSplitter(Estimator):
@@ -10,9 +11,11 @@ class EgoNetSplitter(Estimator):
 
     Args:
         resolution (float): Resolution parameter of Python Louvain. Default 1.0.
+        seed (int): Random seed value. Default is 42.
     """
-    def __init__(self, resolution=1.0):
+    def __init__(self, resolution: float=1.0, seed: int=42):
         self.resolution = resolution
+        self.seed = seed
 
     def _create_egonet(self, node):
         """
@@ -74,13 +77,14 @@ class EgoNetSplitter(Estimator):
         for node, membership in self.partitions.items():
             self.overlapping_partitions[self.personality_map[node]].append(membership)
 
-    def fit(self, graph):
+    def fit(self, graph: nx.classes.graph.Graph):
         """
         Fitting an Ego-Splitter clustering model.
 
         Arg types:
             * **graph** *(NetworkX graph)* - The graph to be clustered.
         """
+        self._set_seed()
         self._check_graph(graph)
         self.graph = graph
         self._create_egonets()
@@ -88,7 +92,7 @@ class EgoNetSplitter(Estimator):
         self._create_persona_graph()
         self._create_partitions()
 
-    def get_memberships(self):
+    def get_memberships(self) -> Dict[int, int]:
         r"""Getting the cluster membership of nodes.
 
         Return types:

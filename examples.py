@@ -10,12 +10,35 @@ from scipy.sparse import coo_matrix
 from karateclub.node_embedding.neighbourhood import GraRep, DeepWalk, Walklets, NMFADMM, Diff2Vec, BoostNE, NetMF, LaplacianEigenmaps, HOPE, NodeSketch
 from karateclub.community_detection.overlapping import EgoNetSplitter, NNSED, DANMF, MNMF, BigClam, SymmNMF
 from karateclub.community_detection.non_overlapping import EdMot, LabelPropagation, SCD, GEMSEC
-from karateclub.graph_embedding import Graph2Vec, FGSD, GL2Vec, SF, NetLSD, GeoScattering
-from karateclub.node_embedding.attributed import BANE, TENE, TADW, FSCNMF, SINE, MUSAE
+from karateclub.graph_embedding import Graph2Vec, FGSD, GL2Vec, SF, NetLSD, GeoScattering, FeatherGraph
+from karateclub.node_embedding.attributed import BANE, TENE, TADW, FSCNMF, SINE, MUSAE, FeatherNode
 from karateclub.node_embedding.structural import GraphWave, Role2Vec
 from karateclub.node_embedding.meta import NEU
 from karateclub.dataset import GraphReader, GraphSetReader
 
+#---------------
+# Feather Node
+#---------------
+
+g = nx.newman_watts_strogatz_graph(150, 10, 0.2)
+
+X = np.random.uniform(0, 1, (150, 127))
+
+model = FeatherNode()
+
+model.fit(g, X)
+embedding = model.get_embedding()
+
+#----------------
+# Feather Graph
+#----------------
+
+graphs = [nx.newman_watts_strogatz_graph(50, 5, 0.3) for _ in range(100)]
+
+model = FeatherGraph()
+
+model.fit(graphs)
+embedding = model.get_embedding()
 
 #----------------
 # GEMSEC example
@@ -114,8 +137,6 @@ model = MUSAE()
 
 model.fit(g, X)
 
-model.get_memberships()
-
 #--------------
 # SINE example
 #--------------
@@ -134,8 +155,6 @@ X = coo_matrix((data, (row, col)), shape=shape)
 model = SINE()
 
 model.fit(g, X)
-
-model.get_memberships()
 
 #-------------
 # SCD example
@@ -455,7 +474,7 @@ embedding = model.get_embedding()
 # GraphWave example
 #-------------------
 
-g = nx.newman_watts_strogatz_graph(2000, 10, 0.02)
+g = nx.newman_watts_strogatz_graph(200, 10, 0.02)
 
 model = GraphWave()
 

@@ -103,6 +103,10 @@ Structural node embedding
 Attributed node embedding
 --------------------
 
+.. automodule:: karateclub.node_embedding.attributed.feathernode
+    :members:
+    :undoc-members:
+
 .. automodule:: karateclub.node_embedding.attributed.musae
     :members:
     :undoc-members:
@@ -136,6 +140,10 @@ Meta node embedding
 
 Whole graph embedding
 --------------------
+
+.. automodule:: karateclub.graph_embedding.feathergraph
+    :members:
+    :undoc-members:
 
 .. automodule:: karateclub.graph_embedding.geoscattering
     :members:

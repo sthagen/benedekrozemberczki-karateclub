@@ -1,5 +1,6 @@
 import numpy as np
 import networkx as nx
+from typing import List
 from karateclub.estimator import Estimator
 from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 from karateclub.utils.treefeatures import WeisfeilerLehmanHashing
@@ -26,8 +27,9 @@ class GL2Vec(Estimator):
         min_count (int): Minimal count of graph feature occurences. Default is 5.
         seed (int): Random seed for the model. Default is 42.
     """
-    def __init__(self, wl_iterations=2, dimensions=128, workers=4, down_sampling=0.0001,
-                 epochs=10, learning_rate=0.025, min_count=5, seed=42):
+    def __init__(self, wl_iterations: int=2, dimensions: int=128, workers: int=4,
+                 down_sampling: float=0.0001, epochs: int=10, learning_rate: float=0.025,
+                 min_count: int=5, seed: int=42):
 
         self.wl_iterations = wl_iterations
         self.dimensions = dimensions
@@ -53,13 +55,14 @@ class GL2Vec(Estimator):
         line_graph = nx.from_edgelist(edges)
         return line_graph
 
-    def fit(self, graphs):
+    def fit(self, graphs: List[nx.classes.graph.Graph]):
         """
         Fitting a GL2Vec model.
 
         Arg types:
             * **graphs** *(List of NetworkX graphs)* - The graphs to be embedded.
         """
+        self._set_seed()
         self._check_graphs(graphs)
         graphs = [self._create_line_graph(graph) for graph in graphs]
         documents = [WeisfeilerLehmanHashing(graph, self.wl_iterations, False) for graph in graphs]
@@ -78,7 +81,7 @@ class GL2Vec(Estimator):
 
         self._embedding = [model.docvecs[str(i)] for i, _ in enumerate(documents)]
 
-    def get_embedding(self):
+    def get_embedding(self) -> np.array:
         r"""Getting the embedding of graphs.
 
         Return types:

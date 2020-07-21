@@ -1,4 +1,5 @@
 import networkx as nx
+from typing import Dict
 from karateclub.estimator import Estimator
 
 class SCD(Estimator):
@@ -12,10 +13,12 @@ class SCD(Estimator):
     Args:
         iterations (int): Refinemeent iterations. Default is 25.
         eps (float): Epsilon score for zero division correction. Default is 10**-6.
+        seed (int): Random seed value. Default is 42.
     """
-    def __init__(self, iterations=25, eps=10**-6):
+    def __init__(self, iterations: int=25, eps: float=10**-6, seed: int=42):
         self.iterations = iterations
         self.eps = eps
+        self.seed = seed
 
     def _set_omega(self):
         """
@@ -163,13 +166,14 @@ class SCD(Estimator):
                 new_memberships[node] = self._cluster_memberships[node]
         self._cluster_memberships = new_memberships
 
-    def fit(self, graph):
+    def fit(self, graph: nx.classes.graph.Graph):
         """
         Fitting a Label Propagation clustering model.
 
         Arg types:
             * **graph** *(NetworkX graph)* - The graph to be clustered.
         """
+        self._set_seed()
         self._check_graph(graph)
         self._graph = graph
         self._create_initial_partition()
@@ -178,7 +182,7 @@ class SCD(Estimator):
         for _ in range(self.iterations):
             self._do_refinement()
 
-    def get_memberships(self):
+    def get_memberships(self) -> Dict[int, int]:
         r"""Getting the cluster membership of nodes.
 
         Return types:
