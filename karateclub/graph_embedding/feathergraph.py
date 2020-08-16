@@ -18,12 +18,16 @@ class FeatherGraph(Estimator):
         eval_points (int): Number of evaluation points. Default is 25.
         theta_max (int): Maximal evaluation point value. Default is 2.5.
         seed (int): Random seed value. Default is 42.
+        pooling (str): Permutation invariant pooling function, one of:
+                       (:obj:`"mean"`, :obj:`"max"`, :obj:`"min"`). Default is "mean."
     """
-    def __init__(self, order: int=5, eval_points: int=25, theta_max: float=2.5, seed: int=42):
+    def __init__(self, order: int=5, eval_points: int=25,
+                 theta_max: float=2.5, seed: int=42, pooling: str="mean"):
         self.order = order
         self.eval_points = eval_points
         self.theta_max = theta_max
         self.seed = seed
+        self.pooling = pooling
 
 
     def _create_D_inverse(self, graph):
@@ -96,7 +100,14 @@ class FeatherGraph(Estimator):
             X = A_tilde.dot(X)
             feature_blocks.append(X)
         feature_blocks = np.concatenate(feature_blocks, axis=1)
-        feature_blocks = np.mean(feature_blocks, axis=0)
+        if self.pooling == "mean":      
+            feature_blocks = np.mean(feature_blocks, axis=0)
+        elif self.pooling == "min":
+            feature_blocks = np.min(feature_blocks, axis=0)
+        elif self.pooling == "max":
+            feature_blocks = np.max(feature_blocks, axis=0)
+        else:
+            raise ValueError("Wrong pooling function.")
         return feature_blocks
 
 

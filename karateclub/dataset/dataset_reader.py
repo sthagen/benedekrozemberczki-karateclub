@@ -13,7 +13,8 @@ class GraphReader(object):
     r"""Class to read benchmark datasets for the community detection or node embedding task.
 
     Args:
-        dataset (str): Dataset of interest  on of facebook/wikipedia/github/twitch. Default is 'wikipedia'.
+        dataset (str): Dataset of interest, one of: 
+            (:obj:`"facebook"`, :obj:`"twitch"`, :obj:`"wikipedia"`, :obj:`"github"`). Default is 'wikipedia'.
     """
     def __init__(self, dataset: str="wikipedia"):
         self.dataset = dataset
@@ -33,7 +34,7 @@ class GraphReader(object):
         """
         Reading the dataset from the web.
         """
-        path = os.path.join(self.base_url, self.dataset, end)
+        path = self.base_url + self.dataset + "/" + end
         data = urllib.request.urlopen(path).read()
         data = self._pandas_reader(data)
         return data
@@ -98,7 +99,7 @@ class GraphSetReader(object):
         """
         Reading the dataset from the web.
         """
-        path = os.path.join(self.base_url, self.dataset, end)
+        path = self.base_url + self.dataset + "/" + end
         data = urllib.request.urlopen(path).read()
         return data
 
