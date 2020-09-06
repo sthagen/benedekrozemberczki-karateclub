@@ -16,7 +16,7 @@
 
 
 
-Please look at the **[Documentation](https://karateclub.readthedocs.io/)**, relevant **[Paper](https://arxiv.org/abs/2003.04819)**, and **[External Resources](https://karateclub.readthedocs.io/en/latest/notes/resources.html)**.
+Please look at the **[Documentation](https://karateclub.readthedocs.io/)**, relevant **[Paper](https://arxiv.org/abs/2003.04819)**, **[Promo Video](https://www.youtube.com/watch?v=t212-ntxu2U)**, and **[External Resources](https://karateclub.readthedocs.io/en/latest/notes/resources.html)**.
 
 *Karate Club* consists of state-of-the-art methods to do unsupervised learning on graph structured data. To put it simply it is a Swiss Army knife for small-scale graph mining research. First, it provides network embedding techniques at the node and graph level. Second, it includes a variety of overlapping and non-overlapping community detection methods. Implemented methods cover a wide range of network science ([NetSci](https://netscisociety.net/home), [Complenet](https://complenet.weebly.com/)), data mining ([ICDM](http://icdm2019.bigke.org/), [CIKM](http://www.cikm2019.net/), [KDD](https://www.kdd.org/kdd2020/)), artificial intelligence ([AAAI](http://www.aaai.org/Conferences/conferences.php), [IJCAI](https://www.ijcai.org/)) and machine learning ([NeurIPS](https://nips.cc/), [ICML](https://icml.cc/), [ICLR](https://iclr.cc/)) conferences, workshops, and pieces from prominent journals.
 
@@ -33,7 +33,7 @@ If you find *Karate Club* and the new datasets useful in your research, please c
        title = {{Karate Club: An API Oriented Open-source Python Framework for Unsupervised Learning on Graphs}},
        author = {Benedek Rozemberczki and Oliver Kiss and Rik Sarkar},
        year = {2020},
-       booktitle = {Proceedings of the 29th ACM International on Conference on Information and Knowledge Management (CIKM '20)},
+       booktitle = {Proceedings of the 29th ACM International Conference on Information and Knowledge Management (CIKM '20)},
        organization = {ACM},
 }
 ```
@@ -140,6 +140,8 @@ In detail, the following community detection and embedding methods were implemen
 
 * **[FEATHER-G](https://karateclub.readthedocs.io/en/latest/modules/root.html#karateclub.graph_embedding.feathergraph.FeatherGraph)** from Rozemberczki *et al.*: [Characteristic Functions on Graphs: Birds of a Feather, from Statistical Descriptors to Parametric Models](https://arxiv.org/abs/2005.07959) (CIKM 2020)
 
+* **[IGE](https://karateclub.readthedocs.io/en/latest/modules/root.html#karateclub.graph_embedding.ige.IGE)** from Galland *et al.*: [Invariant Embedding for Graph Classification](https://graphreason.github.io/papers/16.pdf) (ICML 2019 LRGSD Workshop)
+
 * **[GeoScattering](https://karateclub.readthedocs.io/en/latest/modules/root.html#karateclub.graph_embedding.geoscattering.GeoScattering)** from Gao *et al.*: [Geometric Scattering for Graph Data Analysis](http://proceedings.mlr.press/v97/gao19e.html) (ICML 2019)
 
 * **[GL2Vec](https://karateclub.readthedocs.io/en/latest/modules/root.html#karateclub.graph_embedding.gl2vec.GL2Vec)** from Chen and Koga: [GL2Vec: Graph Embedding Enriched by Line Graphs with Edge Features](https://link.springer.com/chapter/10.1007/978-3-030-36718-3_1) (ICONIP 2019)
@@ -182,10 +184,11 @@ $ pip install karateclub --upgrade
 As part of the documentation we provide a number of use cases to show how the clusterings and embeddings can be utilized for downstream learning. These can accessed [here](https://karateclub.readthedocs.io/en/latest/notes/introduction.html) with detailed explanations.
 
 
-Besides the case studies we provide synthetic examples for each model. These can be tried out by running the examples script.
+Besides the case studies we provide synthetic examples for each model. These can be tried out by running the example scripts. In order to run one of the examples, the Graph2Vec snippet:
 
 ```sh
-$ python examples.py
+$ cd examples/whole_graph_embedding/
+$ python graph2vec_example.py
 ```
 
 --------------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 import math
+from typing import List
 import numpy as np
 import networkx as nx
-from typing import List
 import scipy.sparse as sparse
 from karateclub.estimator import Estimator
 
@@ -100,7 +100,7 @@ class FeatherGraph(Estimator):
             X = A_tilde.dot(X)
             feature_blocks.append(X)
         feature_blocks = np.concatenate(feature_blocks, axis=1)
-        if self.pooling == "mean":      
+        if self.pooling == "mean":
             feature_blocks = np.mean(feature_blocks, axis=0)
         elif self.pooling == "min":
             feature_blocks = np.min(feature_blocks, axis=0)

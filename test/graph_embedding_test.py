@@ -1,6 +1,7 @@
 import numpy as np
 import networkx as nx
-from karateclub.graph_embedding import Graph2Vec, FGSD, GL2Vec, SF, NetLSD, GeoScattering, FeatherGraph
+from karateclub.graph_embedding import Graph2Vec, FGSD, GL2Vec, SF, IGE
+from karateclub.graph_embedding import NetLSD, GeoScattering, FeatherGraph
 
 
 def test_feather_graph():
@@ -228,4 +229,21 @@ def test_geoscattering():
     
             assert embedding.shape[0] == len(graphs)
             assert embedding.shape[1] == feature_count
+            assert type(embedding) == np.ndarray
+
+def test_ige():
+    """
+    Test the IGE embedding.
+    """
+    graphs = [nx.newman_watts_strogatz_graph(50, 5, 0.3) for _ in range(10)]
+
+    for order in range(4, 20):
+        for moment in range(4, 7):
+
+            model = IGE()
+
+            model.fit(graphs)
+            embedding = model.get_embedding()
+    
+            assert embedding.shape[0] == len(graphs)
             assert type(embedding) == np.ndarray
