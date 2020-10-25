@@ -2,8 +2,30 @@ import random
 import numpy as np
 import networkx as nx
 from scipy.sparse import coo_matrix
-from karateclub.node_embedding.attributed import BANE, TENE, TADW, FSCNMF, SINE, MUSAE, FeatherNode
+from karateclub.node_embedding.attributed import BANE, TENE, TADW, FSCNMF, SINE, MUSAE, FeatherNode, ASNE, AE
 
+
+def test_asne():
+    """
+    Testing the ASNE node embedding.
+    """
+    graph = nx.newman_watts_strogatz_graph(100, 10, 0.2)
+
+    features = {i: random.sample(range(150), 50) for i in range(100)}
+    row = np.array([k for k, v in features.items() for val in v])
+    col = np.array([val for k, v in features.items() for val in v])
+    data = np.ones(100*50)
+    shape = (100, 150)
+
+    features = coo_matrix((data, (row, col)), shape=shape)
+
+    model = ASNE()
+    model.fit(graph, features)
+    embedding = model.get_embedding()
+
+    assert embedding.shape[0] == graph.number_of_nodes()
+    assert embedding.shape[1] == model.dimensions
+    assert type(embedding) == np.ndarray
 
 def test_feather_node():
     """
@@ -196,3 +218,26 @@ def test_sine():
     assert embedding.shape[0] == graph.number_of_nodes()
     assert embedding.shape[1] == model.dimensions
     assert type(embedding) == np.ndarray
+
+
+def test_ae():
+    """
+    Testing the AE node embedding.
+    """
+    graph = nx.newman_watts_strogatz_graph(50, 10, 0.2)
+
+    features = {i: random.sample(range(150), 50) for i in range(50)}
+    row = np.array([k for k, v in features.items() for val in v])
+    col = np.array([val for k, v in features.items() for val in v])
+    data = np.ones(50*50)
+    shape = (50, 150)
+    features = coo_matrix((data, (row, col)), shape=shape)
+
+    model = AE()
+    model.fit(graph, features)
+    embedding = model.get_embedding()
+
+    assert embedding.shape[0] == graph.number_of_nodes()
+    assert embedding.shape[1] == model.dimensions*2
+    assert type(embedding) == np.ndarray
+

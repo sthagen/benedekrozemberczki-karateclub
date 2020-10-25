@@ -53,6 +53,10 @@ Non-overlapping community detection
 Neighbourhood-based node embedding
 --------------------
 
+.. automodule:: karateclub.node_embedding.neighbourhood.geometriclaplacianeigenmaps
+    :members:
+    :undoc-members:
+
 .. automodule:: karateclub.node_embedding.neighbourhood.diff2vec
     :members:
     :undoc-members:
@@ -111,6 +115,10 @@ Attributed node embedding
     :members:
     :undoc-members:
 
+.. automodule:: karateclub.node_embedding.attributed.ae
+    :members:
+    :undoc-members:
+
 .. automodule:: karateclub.node_embedding.attributed.musae
     :members:
     :undoc-members:
@@ -132,6 +140,10 @@ Attributed node embedding
     :undoc-members:
 
 .. automodule:: karateclub.node_embedding.attributed.fscnmf
+    :members:
+    :undoc-members:
+
+.. automodule:: karateclub.node_embedding.attributed.asne
     :members:
     :undoc-members:
 

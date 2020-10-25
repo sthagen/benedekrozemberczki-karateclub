@@ -1,7 +1,7 @@
 import numpy as np
 import networkx as nx
 from karateclub import DeepWalk, Walklets, HOPE, NetMF, Diff2Vec, GraRep, Node2Vec
-from karateclub import NodeSketch, LaplacianEigenmaps, NMFADMM
+from karateclub import NodeSketch, LaplacianEigenmaps, NMFADMM, GLEE
 
 
 def test_deepwalk():
@@ -262,6 +262,35 @@ def test_laplacianeigenmaps():
 
     assert embedding.shape[0] == graph.number_of_nodes()
     assert embedding.shape[1] == model.dimensions
+    assert type(embedding) == np.ndarray
+
+
+def test_geometriclaplacianeigenmaps():
+    """
+    Testing the Geometric Laplacian Eigenmaps class.
+    """
+    model = GLEE()
+
+    graph = nx.watts_strogatz_graph(500, 10, 0.5)
+
+    model.fit(graph)
+
+    embedding = model.get_embedding()
+
+    assert embedding.shape[0] == graph.number_of_nodes()
+    assert embedding.shape[1] == model.dimensions+1
+    assert type(embedding) == np.ndarray
+
+    model = GLEE(dimensions=16)
+
+    graph = nx.watts_strogatz_graph(200, 10, 0.5)
+
+    model.fit(graph)
+
+    embedding = model.get_embedding()
+
+    assert embedding.shape[0] == graph.number_of_nodes()
+    assert embedding.shape[1] == model.dimensions+1
     assert type(embedding) == np.ndarray
 
 

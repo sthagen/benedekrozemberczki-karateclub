@@ -38,19 +38,19 @@ class Estimator(object):
         random.seed(self.seed)
         np.random.seed(self.seed)
 
-    def _check_connectivity(self, graph):
+    def _check_connectivity(self, graph: nx.classes.graph.Graph):
         """Checking the connected nature of a single graph."""
         connected = nx.is_connected(graph)
         assert connected, "Graph is not connected."
 
 
-    def _check_directedness(self, graph):
+    def _check_directedness(self, graph: nx.classes.graph.Graph):
         """Checking the undirected nature of a single graph."""
         directed = nx.is_directed(graph)
         assert directed == False, "Graph is directed."
 
 
-    def _check_indexing(self, graph):
+    def _check_indexing(self, graph: nx.classes.graph.Graph):
         """Checking the consecutive numeric indexing."""
         numeric_indices = [index for index in range(graph.number_of_nodes())]
         node_indices = sorted([node for node in graph.nodes()])

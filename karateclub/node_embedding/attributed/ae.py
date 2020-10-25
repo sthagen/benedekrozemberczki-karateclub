@@ -7,14 +7,12 @@ from karateclub.estimator import Estimator
 from gensim.models.doc2vec import TaggedDocument, Doc2Vec
 from karateclub.utils.walker import RandomWalker
 
-class MUSAE(Estimator):
-    r"""An implementation of `"MUSAE" <https://arxiv.org/abs/1909.13021>`_
+class AE(Estimator):
+    r"""An implementation of `"AE" <https://arxiv.org/abs/1909.13021>`_
     from the Arxiv '19 paper "MUSAE: Multi-Scale Attributed Node Embedding". The
-    procedure does attributed random walks to approximate the adjacency matrix power
-    node feature matrix products. The matrices are decomposed implicitly by a Skip-Gram
-    style optimizer. The individual embeddings are concatenated together to form a 
-    multi-scale attributed node embedding. This way the feature distributions at different scales
-    are separable.
+    procedure does attributed random walks to approximate the pooled adjacency 
+    matrix power node feature matrix product. The matrix is decomposed 
+    implicitly by a Skip-Gram style optimization problem.
        
     Args:
         walk_number (int): Number of random walks. Default is 5.
@@ -72,32 +70,29 @@ class MUSAE(Estimator):
         features_out = [TaggedDocument(words=[str(feat) for feat_elems in feature_set for feat in feat_elems], tags = [str(node)]) for node, feature_set in features.items()]
         return features_out
 
-    def _setup_musae_features(self, approximation):
+    def _setup_ae_features(self):
         features = {str(node): [] for node in self.graph.nodes()}
         for walk in self._walker.walks:
-            for i in range(len(walk)-approximation):
-                source = walk[i]
-                target = walk[i+approximation]
-                features[str(source)].append(self.features[str(target)] + [str(target)])
-                features[str(target)].append(self.features[str(source)] + [str(source)])
+            for approximation in range(1, self.window_size+1):
+                for i in range(len(walk)-approximation):
+                    source = walk[i]
+                    target = walk[i+approximation]
+                    features[str(source)].append(self.features[str(target)] + [str(target)])
+                    features[str(target)].append(self.features[str(source)] + [str(source)])
 
         return self._create_documents(features)
 
-    def _learn_musae_embedding(self):
-
-        for approximation in range(self.window_size):
-
-            features = self._setup_musae_features(approximation+1)
-            embedding = self._create_single_embedding(features)
-            self.embeddings.append(embedding)
+    def _learn_ae_embedding(self):
+        features = self._setup_ae_features()
+        self._embeddings.append(self._create_single_embedding(features))
 
     def _create_base_docs(self):
-        features_out = [TaggedDocument(words=[str(feature) for feature in features], tags = [str(node)]) for node, features in self.features.items()]
+        features_out = [TaggedDocument(words=[str(fet) for fet in feats], tags = [str(n)]) for n, feats in self.features.items()]
         return features_out 
 
     def fit(self, graph: nx.classes.graph.Graph, X: Union[np.array, coo_matrix]):
         """
-        Fitting a MUSAE model.
+        Fitting an AE model.
 
         Arg types:
             * **graph** *(NetworkX graph)* - The graph to be embedded.
@@ -110,8 +105,8 @@ class MUSAE(Estimator):
         self._walker.do_walks(graph)
         self.features = self._feature_transform(graph, X)
         self._base_docs = self._create_base_docs()
-        self.embeddings = [self._create_single_embedding(self._base_docs)]
-        self._learn_musae_embedding()
+        self._embeddings = [self._create_single_embedding(self._base_docs)]
+        self._learn_ae_embedding()
 
     def get_embedding(self) -> np.array:
         r"""Getting the node embedding.
@@ -119,5 +114,4 @@ class MUSAE(Estimator):
         Return types:
             * **embedding** *(Numpy array)* - The embedding of nodes.
         """
-        embedding = np.concatenate(self.embeddings, axis=1)
-        return embedding
+        return np.concatenate(self._embeddings, axis=1)

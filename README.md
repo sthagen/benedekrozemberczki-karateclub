@@ -2,7 +2,6 @@
  ![Version](https://badge.fury.io/py/karateclub.svg?style=plastic)
  ![License](https://img.shields.io/github/license/benedekrozemberczki/karateclub.svg?color=blue&style=plastic)
  [![Arxiv](https://img.shields.io/badge/ArXiv-2003.04819-orange.svg?color=blue&style=plastic)](https://arxiv.org/abs/2003.04819)
- ![Astro](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fastronomer.ullaakut.eu%2Fshields%3Fowner%3Dbenedekrozemberczki%26name%3Dkarateclub)
  [![build badge](https://travis-ci.com/benedekrozemberczki/karateclub.svg?branch=master)](https://travis-ci.com/github/benedekrozemberczki/karateclub)
  [![coverage badge](https://codecov.io/gh/benedekrozemberczki/karateclub/branch/master/graph/badge.svg)](https://codecov.io/github/benedekrozemberczki/karateclub?branch=master)
 <p align="center">
@@ -13,7 +12,6 @@
 
 
 **Karate Club** is an unsupervised machine learning extension library for [NetworkX](https://networkx.github.io/).
-
 
 
 Please look at the **[Documentation](https://karateclub.readthedocs.io/)**, relevant **[Paper](https://arxiv.org/abs/2003.04819)**, **[Promo Video](https://www.youtube.com/watch?v=t212-ntxu2U)**, and **[External Resources](https://karateclub.readthedocs.io/en/latest/notes/resources.html)**.
@@ -33,6 +31,7 @@ If you find *Karate Club* and the new datasets useful in your research, please c
        title = {{Karate Club: An API Oriented Open-source Python Framework for Unsupervised Learning on Graphs}},
        author = {Benedek Rozemberczki and Oliver Kiss and Rik Sarkar},
        year = {2020},
+       pages = {3125–3132},
        booktitle = {Proceedings of the 29th ACM International Conference on Information and Knowledge Management (CIKM '20)},
        organization = {ACM},
 }
@@ -88,6 +87,8 @@ In detail, the following community detection and embedding methods were implemen
 
 **Neighbourhood-Based Node Level Embedding**
 
+* **[GLEE](https://karateclub.readthedocs.io/en/latest/modules/root.html#karateclub.node_embedding.neighbourhood.geometriclaplacianeigenmaps.GLEE)** from Torres *et al.*: [GLEE: Geometric Laplacian Eigenmap Embedding](https://arxiv.org/abs/1905.09763) (Journal of Complex Networks 2020)
+
 * **[BoostNE](https://karateclub.readthedocs.io/en/latest/modules/root.html#karateclub.node_embedding.neighbourhood.boostne.BoostNE)** from Li *et al.*: [Multi-Level Network Embedding with Boosted Low-Rank Matrix Approximation](https://arxiv.org/abs/1808.08627) (ASONAM 2019)
 
 * **[NodeSketch](https://karateclub.readthedocs.io/en/latest/modules/root.html#karateclub.node_embedding.neighbourhood.nodesketch.NodeSketch)**  from Yang *et al.*: [NodeSketch: Highly-Efficient Graph Embeddings via Recursive Sketching](https://exascale.info/assets/pdf/yang2019nodesketch.pdf) (KDD 2019)
@@ -108,7 +109,7 @@ In detail, the following community detection and embedding methods were implemen
 
 * **[NMF-ADMM](https://karateclub.readthedocs.io/en/latest/modules/root.html#karateclub.node_embedding.neighbourhood.nmfadmm.NMFADMM)** from Sun and Févotte: [Alternating Direction Method of Multipliers for Non-Negative Matrix Factorization with the Beta-Divergence](http://statweb.stanford.edu/~dlsun/papers/nmf_admm.pdf) (ICASSP 2014)
 
-* **[Laplacian Eigenmaps](https://karateclub.readthedocs.io/en/latest/modules/root.html#karateclub.node_embedding.neighbourhood.nmfadmm.NMFADMM)** from Belkin and Niyogi: [Laplacian Eigenmaps and Spectral Techniques for Embedding and Clustering](https://papers.nips.cc/paper/1961-laplacian-eigenmaps-and-spectral-techniques-for-embedding-and-clustering) (NIPS 2001)
+* **[Laplacian Eigenmaps](https://karateclub.readthedocs.io/en/latest/modules/root.html#karateclub.node_embedding.neighbourhood.laplacianeigenmaps.LaplacianEigenmaps)** from Belkin and Niyogi: [Laplacian Eigenmaps and Spectral Techniques for Embedding and Clustering](https://papers.nips.cc/paper/1961-laplacian-eigenmaps-and-spectral-techniques-for-embedding-and-clustering) (NIPS 2001)
 
 **Structural Node Level Embedding**
 
@@ -120,6 +121,8 @@ In detail, the following community detection and embedding methods were implemen
 
 * **[FEATHER-N](https://karateclub.readthedocs.io/en/latest/modules/root.html#karateclub.node_embedding.attributed.feathernode.FeatherNode)** from Rozemberczki *et al.*: [Characteristic Functions on Graphs: Birds of a Feather, from Statistical Descriptors to Parametric Models](https://arxiv.org/abs/2005.07959) (CIKM 2020)
 
+* **[AE](https://karateclub.readthedocs.io/en/latest/modules/root.html#karateclub.node_embedding.attributed.ae.AE)** from Rozemberczki *et al.*: [Multi-Scale Attributed Node Embedding](https://arxiv.org/abs/1909.13021) (Arxiv 2019)
+
 * **[MUSAE](https://karateclub.readthedocs.io/en/latest/modules/root.html#karateclub.node_embedding.attributed.musae.MUSAE)** from Rozemberczki *et al.*: [Multi-Scale Attributed Node Embedding](https://arxiv.org/abs/1909.13021) (Arxiv 2019)
 
 * **[FSCNMF](https://karateclub.readthedocs.io/en/latest/modules/root.html#karateclub.node_embedding.attributed.fscnmf.FSCNMF)** from Bandyopadhyay *et al.*: [Fusing Structure and Content via Non-negative Matrix Factorization for Embedding Information Networks](https://arxiv.org/pdf/1804.05313.pdf) (ArXiV 2018)
@@ -129,6 +132,8 @@ In detail, the following community detection and embedding methods were implemen
 * **[BANE](https://karateclub.readthedocs.io/en/latest/modules/root.html#karateclub.node_embedding.attributed.bane.BANE)** from Yang *et al.*: [Binarized Attributed Network Embedding](https://ieeexplore.ieee.org/document/8626170) (ICDM 2018)
 
 * **[TENE](https://karateclub.readthedocs.io/en/latest/modules/root.html#karateclub.node_embedding.attributed.tene.TENE)** from Yang *et al.*: [Enhanced Network Embedding with Text Information](https://ieeexplore.ieee.org/document/8545577) (ICPR 2018)
+
+* **[ASNE](https://karateclub.readthedocs.io/en/latest/modules/root.html#karateclub.node_embedding.attributed.asne.ASNE)** from Liao *et al.*: [Attributed Social Network Embedding](https://arxiv.org/abs/1705.04969) (TKDE 2018)
 
 * **[TADW](https://karateclub.readthedocs.io/en/latest/modules/root.html#karateclub.node_embedding.attributed.tadw.TADW)** from Yang *et al.*: [Network Representation Learning with Rich Text Information](https://www.ijcai.org/Proceedings/15/Papers/299.pdf) (IJCAI 2015)
 
