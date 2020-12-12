@@ -53,6 +53,10 @@ Non-overlapping community detection
 Neighbourhood-based node embedding
 --------------------
 
+.. automodule:: karateclub.node_embedding.neighbourhood.randne
+    :members:
+    :undoc-members:
+
 .. automodule:: karateclub.node_embedding.neighbourhood.geometriclaplacianeigenmaps
     :members:
     :undoc-members:
@@ -156,6 +160,10 @@ Meta node embedding
 
 Whole graph embedding
 --------------------
+
+.. automodule:: karateclub.graph_embedding.ldp
+    :members:
+    :undoc-members:
 
 .. automodule:: karateclub.graph_embedding.feathergraph
     :members:

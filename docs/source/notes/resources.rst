@@ -38,6 +38,8 @@ Neighbourhood-Based Node Embedding
 
 * Jiezhong Qiu, Yuxiao Dong, Hao Ma, Jian Li, Kuansan Wang, and Jie Tang: **Network Embedding as Matrix Factorization: Unifying DeepWalk, LINE, PTE, and Node2Vec** `Paper <https://keg.cs.tsinghua.edu.cn/jietang/publications/WSDM18-Qiu-et-al-NetMF-network-embedding.pdf>`_
 
+* Ziwei Zhang, Peng Cui, Haoyang Li, Xiao Wang, Wenwu Zhu: **Billion-scale Network Embedding with Iterative Random Projection** `Paper <https://arxiv.org/abs/1805.02396>`_, `Code <https://github.com/ZW-ZHANG/RandNE>`_
+
 * Benedek Rozemberczki and Rik Sarkar: **Fast Sequence Based Embedding with Diffusion Graphs** `Paper <https://arxiv.org/abs/2001.07463>`_, `Code <https://github.com/benedekrozemberczki/diff2vec>`_
 
 * Bryan Perozzi, Vivek Kulkarni, Haochen Chen, Steven Skiena: **Don't Walk, Skip! Online Learning of Multi-scale Network Embeddings** `Paper <https://arxiv.org/abs/1605.02115>`_, `Code <https://github.com/benedekrozemberczki/walklets>`_
@@ -89,6 +91,8 @@ Whole Graph Embedding
 --------------------
 
 * Benedek Rozemberczki, Rik Sarkar: **Characteristic Functions on Graphs: Birds of a Feather, from Statistical Descriptors to Parametric Models** `Paper <https://arxiv.org/abs/2005.07959>`_, `Code <https://github.com/benedekrozemberczki/FEATHER>`_
+
+* Chen Cai, Yusu Wang: **A Simple Yet Effective Baseline for Non-Attributed Graph Classification** `Paper <https://arxiv.org/abs/1811.03508>`_, `Code <https://github.com/Chen-Cai-OSU/LDP/>`_
 
 * Alexis Galland, Marc Lelarge: **Invariant Embedding for Graph Classification** `Paper <https://graphreason.github.io/papers/16.pdf>`_, `Code <https://github.com/agalland/invariant_embedding>`_
 

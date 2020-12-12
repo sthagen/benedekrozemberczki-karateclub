@@ -16,11 +16,14 @@ class NNSED(Estimator):
         layers (int): Embedding layer size. Default is 32.
         iterations (int): Number of training epochs. Default 10.
         seed (int): Random seed for weight initializations. Default 42.
+        noise (float): Random noise for normalization stability. Default is 10**-6.
     """
-    def __init__(self, dimensions: int=32, iterations: int=10, seed: int=42):
+    def __init__(self, dimensions: int=32, iterations: int=10,
+                 seed: int=42, noise: float=10**-6):
         self.dimensions = dimensions
         self.iterations = iterations
         self.seed = seed
+        self.noise = noise
 
     def _create_D_inverse(self, graph):
         """
@@ -71,7 +74,7 @@ class NNSED(Estimator):
         enum = A.dot(self._Z.T)
         denom_1 = self._W.dot(self._Z).dot(self._Z.T)
         denom_2 = (A.dot(A.transpose())).dot(self._W)
-        denom = denom_1 + denom_2
+        denom = denom_1 + denom_2 + self.noise
         self._W = self._W*(enum/denom)
 
     def _update_Z(self, A):
@@ -82,7 +85,7 @@ class NNSED(Estimator):
             * **A** *(Scipy COO matrix)* - The normalized adjacency matrix.
         """
         enum = (A.dot(self._W)).transpose()
-        denom = np.dot(np.dot(self._W.T, self._W), self._Z) + self._Z
+        denom = np.dot(np.dot(self._W.T, self._W), self._Z) + self._Z + self.noise
         self._Z = self._Z*(enum/denom)
 
     def get_embedding(self) -> np.array:

@@ -97,6 +97,8 @@ In detail, the following community detection and embedding methods were implemen
 
 * **[NetMF](https://karateclub.readthedocs.io/en/latest/modules/root.html#karateclub.node_embedding.neighbourhood.netmf.NetMF)** from Qiu *et al.*: [Network Embedding as Matrix Factorization: Unifying DeepWalk, LINE, PTE, and Node2Vec](https://keg.cs.tsinghua.edu.cn/jietang/publications/WSDM18-Qiu-et-al-NetMF-network-embedding.pdf) (WSDM 2018)
 
+* **[RandNE](https://karateclub.readthedocs.io/en/latest/modules/root.html#karateclub.node_embedding.neighbourhood.randne.RandNE)** from Zhang *et al.*: [Billion-scale Network Embedding with Iterative Random Projection](https://arxiv.org/abs/1805.02396) (ICDM 2018)
+
 * **[Walklets](https://karateclub.readthedocs.io/en/latest/modules/root.html#karateclub.node_embedding.neighbourhood.walklets.Walklets)** from Perozzi *et al.*: [Don't Walk, Skip! Online Learning of Multi-scale Network Embeddings](https://arxiv.org/abs/1605.02115) (ASONAM 2017)
 
 * **[HOPE](https://karateclub.readthedocs.io/en/latest/modules/root.html#karateclub.node_embedding.neighbourhood.hope.HOPE)** from Ou *et al.*: [Asymmetric Transitivity Preserving Graph Embedding](https://dl.acm.org/doi/abs/10.1145/2939672.2939751) (KDD 2016)
@@ -146,6 +148,8 @@ In detail, the following community detection and embedding methods were implemen
 * **[FEATHER-G](https://karateclub.readthedocs.io/en/latest/modules/root.html#karateclub.graph_embedding.feathergraph.FeatherGraph)** from Rozemberczki *et al.*: [Characteristic Functions on Graphs: Birds of a Feather, from Statistical Descriptors to Parametric Models](https://arxiv.org/abs/2005.07959) (CIKM 2020)
 
 * **[IGE](https://karateclub.readthedocs.io/en/latest/modules/root.html#karateclub.graph_embedding.ige.IGE)** from Galland *et al.*: [Invariant Embedding for Graph Classification](https://graphreason.github.io/papers/16.pdf) (ICML 2019 LRGSD Workshop)
+
+* **[LDP](https://karateclub.readthedocs.io/en/latest/modules/root.html#karateclub.graph_embedding.ldp.LDP)** from Cai *et al.*: [A Simple Yet Effective Baseline for Non-Attributed Graph Classification](https://arxiv.org/abs/1811.03508) (ICLR 2019)
 
 * **[GeoScattering](https://karateclub.readthedocs.io/en/latest/modules/root.html#karateclub.graph_embedding.geoscattering.GeoScattering)** from Gao *et al.*: [Geometric Scattering for Graph Data Analysis](http://proceedings.mlr.press/v97/gao19e.html) (ICML 2019)
 

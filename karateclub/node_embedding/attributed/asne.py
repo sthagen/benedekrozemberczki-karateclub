@@ -13,14 +13,14 @@ class ASNE(Estimator):
     Args:
         dimensions (int): Dimensionality of embedding. Default is 128.
         workers (int): Number of cores. Default is 4.
-        epochs (int): Number of epochs. Default is 1.
+        epochs (int): Number of epochs. Default is 100.
         down_sampling (float): Down sampling frequency. Default is 0.0001.
         learning_rate (float): HogWild! learning rate. Default is 0.05.
         min_count (int): Minimal count of node occurrences. Default is 1.
         seed (int): Random seed value. Default is 42.
     """
     def __init__(self, dimensions: int=128, workers: int=4,
-                 epochs: int=10, down_sampling: float=0.0001,
+                 epochs: int=100, down_sampling: float=0.0001,
                  learning_rate: float=0.05, min_count: int=1, seed: int=42):
 
         self.dimensions = dimensions
@@ -59,7 +59,7 @@ class ASNE(Estimator):
                         dm=0,
                         sample=self.down_sampling,
                         workers=self.workers,
-                        epochs=self.epochs,
+                        iter=self.epochs,
                         alpha=self.learning_rate,
                         seed=self.seed)
 
