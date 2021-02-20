@@ -1,8 +1,9 @@
 
  ![Version](https://badge.fury.io/py/karateclub.svg?style=plastic)
- ![License](https://img.shields.io/github/license/benedekrozemberczki/karateclub.svg?color=blue&style=plastic)
- [![Arxiv](https://img.shields.io/badge/ArXiv-2003.04819-orange.svg?color=blue&style=plastic)](https://arxiv.org/abs/2003.04819)
- [![build badge](https://travis-ci.com/benedekrozemberczki/karateclub.svg?branch=master)](https://travis-ci.com/github/benedekrozemberczki/karateclub)
+ ![License](https://img.shields.io/github/license/benedekrozemberczki/karateclub.svg)
+[![repo size](https://img.shields.io/github/repo-size/benedekrozemberczki/karateclub.svg)](https://github.com/benedekrozemberczki/karateclub/archive/master.zip)
+ [![Arxiv](https://img.shields.io/badge/ArXiv-2003.04819-orange.svg)](https://arxiv.org/abs/2003.04819)
+[![build badge](https://github.com/benedekrozemberczki/karateclub/workflows/CI/badge.svg)](https://github.com/benedekrozemberczki/karateclub/actions?query=workflow%3ACI)
  [![coverage badge](https://codecov.io/gh/benedekrozemberczki/karateclub/branch/master/graph/badge.svg)](https://codecov.io/github/benedekrozemberczki/karateclub?branch=master)
 <p align="center">
   <img width="90%" src="https://github.com/benedekrozemberczki/karateclub/blob/master/karatelogo.jpg?sanitize=true" />
@@ -86,6 +87,8 @@ In detail, the following community detection and embedding methods were implemen
 * **[Label Propagation](https://karateclub.readthedocs.io/en/latest/modules/root.html#karateclub.community_detection.non_overlapping.label_propagation.LabelPropagation)** from Raghavan *et al.*: [Near Linear Time Algorithm to Detect Community Structures in Large-Scale Networks](https://arxiv.org/abs/0709.2938) (Physics Review E 2007)
 
 **Neighbourhood-Based Node Level Embedding**
+
+* **[SocioDim](https://karateclub.readthedocs.io/en/latest/modules/root.html#karateclub.node_embedding.neighbourhood.sociodim.SocioDim)** from Tang *et al.*: [Relational Learning via Latent Social Dimensions](ttp://www.public.asu.edu/~huanliu/papers/kdd09.pdf) (KDD 2009)
 
 * **[GLEE](https://karateclub.readthedocs.io/en/latest/modules/root.html#karateclub.node_embedding.neighbourhood.geometriclaplacianeigenmaps.GLEE)** from Torres *et al.*: [GLEE: Geometric Laplacian Eigenmap Embedding](https://arxiv.org/abs/1905.09763) (Journal of Complex Networks 2020)
 
