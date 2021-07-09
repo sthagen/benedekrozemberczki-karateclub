@@ -48,7 +48,7 @@ class ASNE(Estimator):
             * **X** *(Scipy COO array)* - The matrix of node features.
         """
         self._set_seed()
-        self._check_graph(graph)
+        graph = self._check_graph(graph)
         features = self._feature_transform(graph, X)
         documents = [TaggedDocument(words=features[node], tags=[str(node)]) for node in range(len(features))]
 
@@ -59,7 +59,7 @@ class ASNE(Estimator):
                         dm=0,
                         sample=self.down_sampling,
                         workers=self.workers,
-                        iter=self.epochs,
+                        epochs=self.epochs,
                         alpha=self.learning_rate,
                         seed=self.seed)
 

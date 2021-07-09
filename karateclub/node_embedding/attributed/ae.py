@@ -59,7 +59,7 @@ class AE(Estimator):
                         dm=0,
                         sample=self.down_sampling,
                         workers=self.workers,
-                        iter=self.epochs,
+                        epochs=self.epochs,
                         seed=self.seed)
 
         emb = np.array([model.docvecs[str(n)] for n in range(self.graph.number_of_nodes())])
@@ -99,7 +99,7 @@ class AE(Estimator):
             * **X** *(Scipy COO array)* - The binary matrix of node features.
         """
         self._set_seed()
-        self._check_graph(graph)
+        graph = self._check_graph(graph)
         self.graph = graph
         self._walker = RandomWalker(self.walk_length, self.walk_number)
         self._walker.do_walks(graph)

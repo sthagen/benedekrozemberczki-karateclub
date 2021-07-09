@@ -89,7 +89,7 @@ class Role2Vec(Estimator):
             * **graph** *(NetworkX graph)* - The graph to be embedded.
         """
         self._set_seed()
-        self._check_graph(graph)
+        graph = self._check_graph(graph)
         walker = RandomWalker(self.walk_length, self.walk_number)
         walker.do_walks(graph)
  
@@ -108,7 +108,7 @@ class Role2Vec(Estimator):
                         dm=0,
                         workers=self.workers,
                         sample=self.down_sampling,
-                        iter=self.epochs,
+                        epochs=self.epochs,
                         alpha=self.learning_rate,
                         seed=self.seed)
 

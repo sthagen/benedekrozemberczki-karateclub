@@ -68,7 +68,7 @@ class SINE(Estimator):
             * **X** *(Scipy COO array)* - The matrix of node features.
         """
         self._set_seed()
-        self._check_graph(graph)
+        graph = self._check_graph(graph)
         self._walker = RandomWalker(self.walk_length, self.walk_number)
         self._walker.do_walks(graph)
         self._features = self._feature_transform(graph, X)
@@ -77,14 +77,14 @@ class SINE(Estimator):
         model = Word2Vec(self._walklets,
                          hs=0,
                          alpha=self.learning_rate,
-                         size=self.dimensions,
+                         vector_size=self.dimensions,
                          window=1,
                          min_count=self.min_count,
                          workers=self.workers,
                          seed=self.seed,
-                         iter=self.epochs)
+                         epochs=self.epochs)
 
-        self.embedding = np.array([model[str(n)] for n in range(graph.number_of_nodes())])
+        self.embedding = np.array([model.wv[str(n)] for n in range(graph.number_of_nodes())])
 
     def get_embedding(self) -> np.array:
         r"""Getting the node embedding.
