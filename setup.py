@@ -10,7 +10,7 @@ install_requires = [
     "scipy",
     "pygsp",
     "gensim>=4.0.0",
-    "pandas",
+    "pandas<=1.3.5",
     "six",
     "python-Levenshtein"
 ]
@@ -46,13 +46,13 @@ keywords = [
 setup(
     name="karateclub",
     packages=find_packages(),
-    version="1.2.2",
+    version="1.2.3",
     license="GPLv3",
     description="A general purpose library for community detection, network embedding, and graph mining research.",
     author="Benedek Rozemberczki",
     author_email="benedek.rozemberczki@gmail.com",
     url="https://github.com/benedekrozemberczki/karateclub",
-    download_url="https://github.com/benedekrozemberczki/karateclub/archive/v_10202.tar.gz",
+    download_url="https://github.com/benedekrozemberczki/karateclub/archive/v_10203.tar.gz",
     keywords=keywords,
     install_requires=install_requires,
     setup_requires=setup_requires,
